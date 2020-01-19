@@ -124,16 +124,16 @@ class CardContent extends StatelessWidget {
     //   "mobile": "13981983532",
     //   "pwd": "983532",
     // });
-     NetUtils.get('http://www.mocky.io/v2/5c80ea4f310000c016771c07').then((res) => {
-      //  s = res['data'],
-      //  l = res['subscriptions_url'],
-       print('kks'),
-       print(3),
-       print(res.data.toString())
-     }).catchError((onError) => {
-       print('1'),
-       print(onError)
-     });
+    //  NetUtils.get('http://www.mocky.io/v2/5c80ea4f310000c016771c07').then((res) => {
+    //   //  s = res['data'],
+    //   //  l = res['subscriptions_url'],
+    //    print('kks'),
+    //    print(3),
+    //    print(res.data.toString())
+    //  }).catchError((onError) => {
+    //    print('1'),
+    //    print(onError)
+    //  });
      print(9);
      print('lalallaallalalala');
      print(s);
