@@ -124,6 +124,7 @@ class CardContent extends StatelessWidget {
     //   "mobile": "13981983532",
     //   "pwd": "983532",
     // });
+    // 调用接口会报错，暂未解决。。。。。。。。。。。。。。。。。。。。。。。
     //  NetUtils.get('http://www.mocky.io/v2/5c80ea4f310000c016771c07').then((res) => {
     //   //  s = res['data'],
     //   //  l = res['subscriptions_url'],
