@@ -1,6 +1,8 @@
 // import 'package:dio/dio.dart';
 // import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'utils/net_utils.dart';
 // import 'package:app/utils/net_utils.dart';
@@ -43,7 +45,9 @@ const List<CardList> cardLists = const <CardList>[
   const CardList(assetSrc: 'images/js.png', title: '《JavaScript高级程序设计》', desc: '《JavaScript高级程序设计》是2006年人民邮电出版社出版的图书，作者是(美)(Nicholas C.Zakas)扎卡斯。本书适合有一定编程经验的开发人员阅读，也可作为高校相关专业课程的教材。'),
 ];
 
+
 const entries = ['1', '2', '3','1', '2', '3', '1', '2', '3','1', '2', '3','1', '2', '3'];
+var cardsList;
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({ Key key, this.choice }) : super(key: key);
 
@@ -64,8 +68,24 @@ class ChoiceCard extends StatelessWidget {
 class CardContent extends StatelessWidget {
   const CardContent({Key key, this.choice}) : super(key: key);
   final Choice choice;
+    getNetData(index) async {
+    var url = 'http://gank.io/api/data/Android/10/1';
+    NetUtils.get(url, (data) {
+      if (data != null) {
+        print(332);
+        cardsList = json.decode(data)['results'];
+        print(cardsList[0]['desc']);
+        return;
+      }
+    }, errorCallback: (e) {
+      print("network error: $e");
+    });
+    }
+
   @override
   Widget build(BuildContext context) {
+    // 获取接口数据
+    getNetData(choice.index);
     if(choice.index == 1) {
       return ListView.separated(
         padding: const EdgeInsets.all(8),
@@ -113,34 +133,10 @@ class CardContent extends StatelessWidget {
         }
       );
     } else {
-    //  var s =  NetUtils.get('https://api.github.com/users/cheng');
-    // dio.options.responseType = ResponseType.plain;
-    //  Response s =  await dio.get('https://api.github.com/users/cheng');
-     var s;
-     var l;
-    //  NetUtils.get('https://api.github.com/users/cheng').then((res) => {
       print(2);
-    //   FormData formData = new FormData.from({
-    //   "mobile": "13981983532",
-    //   "pwd": "983532",
-    // });
-    // 调用接口会报错，暂未解决。。。。。。。。。。。。。。。。。。。。。。。
-    //  NetUtils.get('http://www.mocky.io/v2/5c80ea4f310000c016771c07').then((res) => {
-    //   //  s = res['data'],
-    //   //  l = res['subscriptions_url'],
-    //    print('kks'),
-    //    print(3),
-    //    print(res.data.toString())
-    //  }).catchError((onError) => {
-    //    print('1'),
-    //    print(onError)
-    //  });
-     print(9);
-     print('lalallaallalalala');
-     print(s);
-     print(l);
+      // getNetData(choice.index);
       return new Container(
-        child:Text('12222'),
+        child:Text(cardsList[0]['desc']),
       );
     }
   }

@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  http: ^0.11.0 
+  convert: ^0.11.0
   flutter:
     sdk: flutter
   cookie_jar: ^1.0.0

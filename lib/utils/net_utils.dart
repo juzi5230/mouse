@@ -1,55 +1,41 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 
-Map<String, dynamic> optHeader = {
-  'accept-language': 'zh-cn',
-  'content-type': 'application/json'
-};
-
-var dio = new Dio(BaseOptions(connectTimeout: 30000, headers: optHeader, responseType: ResponseType.plain));
-
+import 'package:http/http.dart' as http;
+// import 'dart:convert';
+ 
 class NetUtils {
-  static Future get(String url, [Map<String, dynamic> params]) async {
-    var response;
-
-    // 设置代理 便于本地 charles 抓包
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (HttpClient client) {
-    //   client.findProxy = (uri) {
-    //     return "PROXY 30.10.24.79:8889";
-    //   };
-    // };
-
-    Directory documentsDir = await getApplicationDocumentsDirectory();
-    String documentsPath = documentsDir.path;
-    var dir = new Directory("$documentsPath/cookies");
-    await dir.create();
-    dio.interceptors.add(CookieManager(PersistCookieJar(dir: dir.path)));
-    if (params != null) {
-      response = await dio.get(url, queryParameters: params);
-    } else {
-      response = await dio.get(url);
+  static void get(String url, Function callback, {Map<String, String> params, Function errorCallback}) async {
+    if (params != null && params.isNotEmpty) {
+      StringBuffer sb = new StringBuffer("?");
+      params.forEach((key, value) {
+        sb.write("$key" + "=" + "$value" + "&");
+      });
+      String paramStr = sb.toString();
+      paramStr = paramStr.substring(0, paramStr.length - 1);
+      url += paramStr;
     }
-    return new Map<List<int>, List<int>>.from(response.data);
+//    print("$url");
+    try {
+      http.Response res = await http.get(url);
+      if (callback != null) {
+        callback(res.body);
+      }
+    } catch (exception) {
+      if (errorCallback != null) {
+        errorCallback(exception);
+      }
+    }
   }
-
-  static Future post(String url, Map<String, dynamic> params) async {
-    // // 设置代理 便于本地 charles 抓包
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (HttpClient client) {
-    //   client.findProxy = (uri) {
-    //     return "PROXY 30.10.24.79:8889";
-    //   };
-    // };
-    Directory documentsDir = await getApplicationDocumentsDirectory();
-    String documentsPath = documentsDir.path;
-    var dir = new Directory("$documentsPath/cookies");
-    await dir.create();
-    dio.interceptors.add(CookieManager(PersistCookieJar(dir: dir.path)));
-    var response = await dio.post(url, data: params);
-    return response.data;
+  
+  static void post(String url, Function callback, {Map<String, String> params, Function errorCallback}) async {
+    try {
+      http.Response res = await http.post(url, body: params);
+      if (callback != null) {
+        callback(res.body);
+      }
+    } catch (e) {
+      if (errorCallback != null) {
+        errorCallback(e);
+      }
+    }
   }
 }

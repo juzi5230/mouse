@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isScrollable: true,
           tabs:choices.map((Choice choice) {
             return new Tab(
-              text: choice.title,
+              text: choice.title +'${_counter}',
               icon: new Icon(choice.icon),
             );
           }).toList(),
